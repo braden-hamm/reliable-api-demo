@@ -32,4 +32,4 @@ Steps:
    python security_sweep.py .
    Confirm zero findings.
 
-When ready, use the Instructor Pack's Publish Tutors to push to GitHub/Docker Hub.
+
