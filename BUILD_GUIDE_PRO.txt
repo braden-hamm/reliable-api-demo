@@ -1,7 +1,7 @@
 BUILD MODE — Professional Guide
 Generated: 2025-10-20 08:43 UTC
 
-Goal: Rebuild the reliable API, verify, then (optionally) publish.
+Goal: Build the reliable API, verify, then (optionally) publish.
 
 Steps:
 1) Create env:
