@@ -1,0 +1,20 @@
+Security Baseline — v5.0  (2025-10-20 08:43 UTC)
+Aligned with OWASP API Security Top 10 (selected controls)
+
+1) Broken Object Level Authorization (BOLA): N/A demo scope; no object fetch by ID without auth.
+2) Broken Authentication: API key required via header X-API-Key; no hardcoded secrets; env-only.
+3) Excessive Data Exposure: Stable minimal schemas; no debug detailed errors.
+4) Lack of Resources & Rate Limiting: Simple per-IP token bucket (RATE_LIMIT_RPS).
+5) Broken Function Level Authorization: Only public demo endpoints exposed; auth enforced on POST.
+6) Mass Assignment: Pydantic models enforce explicit fields only.
+7) Security Misconfiguration: CORS restricted, trusted hosts allow-list, optional HTTPS redirect.
+8) Injection: Inputs constrained by regex/types; no dynamic SQL/templates.
+9) Improper Assets Management: Single versioned API; no legacy routes.
+10) Insufficient Logging & Monitoring: Minimal; recommend enabling server logs in production.
+
+Container baseline:
+- Non-root USER in Dockerfile.
+- Dependencies pinned via requirements.txt.
+- Compose omits deprecated 'version' key.
+
+Run `python security_sweep.py <kit_folder>` before publishing; ensure 0 findings.

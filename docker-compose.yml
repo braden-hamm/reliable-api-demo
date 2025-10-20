@@ -1,0 +1,14 @@
+services:
+  api:
+    build: ./assets/fastapi_app
+    container_name: reliable-api-demo
+    ports:
+      - "8080:8080"
+    environment:
+      - DEMO_API_KEY=${DEMO_API_KEY}
+      - ENABLE_HTTPS_REDIRECT=${ENABLE_HTTPS_REDIRECT:-false}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1}
+      - CORS_ALLOW_ORIGINS=${CORS_ALLOW_ORIGINS:-http://localhost,http://127.0.0.1}
+      - RATE_LIMIT_RPS=${RATE_LIMIT_RPS:-5}
+    read_only: false
+    restart: unless-stopped

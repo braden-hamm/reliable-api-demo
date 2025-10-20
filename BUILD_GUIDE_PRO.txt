@@ -1,0 +1,35 @@
+BUILD MODE — Professional Guide
+Generated: 2025-10-20 08:43 UTC
+
+Goal: Rebuild the reliable API, verify, then (optionally) publish.
+
+Steps:
+1) Create env:
+   Windows:  copy assets\.env.example assets\.env
+   macOS/Linux:  cp assets/.env.example assets/.env
+
+2) Inspect Dockerfile base:
+   FROM mcr.microsoft.com/devcontainers/python:3.11
+   (Non-root USER is already configured.)
+
+3) Compose file (already present):
+   services.api.build: ./assets/fastapi_app
+
+4) Build & run:
+   docker compose up --build
+
+5) Verify:
+   http://localhost:8080/healthz
+   POST /orders twice with same X-Correlation-Id → same order_id
+
+6) Security checklist:
+   - CORS origins ok for local
+   - Trusted hosts allow-list includes localhost
+   - Optional HTTPS redirect off for local
+   - RATE_LIMIT_RPS default 5
+
+7) Run sweep before publish:
+   python security_sweep.py .
+   Confirm zero findings.
+
+When ready, use the Instructor Pack's Publish Tutors to push to GitHub/Docker Hub.
