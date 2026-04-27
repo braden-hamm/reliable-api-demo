@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 import os, time
 
 # --- Config (env) ---
-DEMO_API_KEY = os.getenv("DEMO_API_KEY", "demo-secret-key")
+DEMO_API_KEY = os.getenv("DEMO_API_KEY")
 ENABLE_HTTPS_REDIRECT = os.getenv("ENABLE_HTTPS_REDIRECT", "false").lower() == "true"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 RATE_LIMIT_RPS = float(os.getenv("RATE_LIMIT_RPS", "5"))  # per-client simple token bucket
@@ -35,6 +35,9 @@ if ENABLE_HTTPS_REDIRECT:
 # --- Simple in-memory idempotency + rate limits ---
 idempotent_store = {}
 buckets = {}  # client_ip -> (tokens, last_ts)
+
+def _api_key_configured() -> bool:
+    return bool(DEMO_API_KEY and DEMO_API_KEY not in {"CHANGEME", "demo-secret-key"})
 
 def _rate_limit(client_ip: str) -> bool:
     now = time.time()
@@ -68,6 +71,9 @@ def create_order(order: OrderIn,
     client_ip = request.client.host if request.client else "unknown"
     if not _rate_limit(client_ip):
         raise HTTPException(status_code=429, detail="rate limit exceeded")
+
+    if not _api_key_configured():
+        raise HTTPException(status_code=503, detail="server api key not configured")
 
     if not x_api_key or x_api_key != DEMO_API_KEY:
         raise HTTPException(status_code=401, detail="invalid api key")

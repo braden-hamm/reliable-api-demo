@@ -7,6 +7,7 @@ Steps:
 1) Create env:
    Windows:  copy assets\.env.example assets\.env
    macOS/Linux:  cp assets/.env.example assets/.env
+   Then edit assets/.env and replace DEMO_API_KEY=CHANGEME with your own local demo key.
 
 2) Inspect Dockerfile base:
    FROM mcr.microsoft.com/devcontainers/python:3.11
